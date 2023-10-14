@@ -1,0 +1,17 @@
+# Global
+*.txt
+
+# Rust
+*/target
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Zig
+*/zig-cache
