@@ -19,3 +19,14 @@ Permissions Size User    Name
 .rw-r--r--   45k aritmos SumatraPDF-settings.txt
 .rw-r--r--   28k aritmos SumatraPDF-settings-purged.txt
 ```
+
+### Implementation
+I had already written the Rust implementation a couple months before the creation of the repo. Since this is a nice little scripting project I thought it would be good to translate it into Go and Zig as I clean up the original implementation.
+
+|          | Basic Impl | Polished |
+| -------- | ---------- | -------- |
+| **Rust** |     ✔️      |          |
+| **Go**   |            |          |
+| **Zig**  |            |          |
+
+
