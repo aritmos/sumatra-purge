@@ -2,19 +2,20 @@
 //! New settings are written into `SumatraPDF-settings-filtered.txt`
 
 fn main() {
-    let mut args = std::env::args().skip(1);
+    let settings_filepath = std::env::args().nth(1).unwrap_or({
+        // try to find SumatraPDF using PATH, else try current folder
+        let where_sumatrapdf = std::process::Command::new("where SumatraPDF").output();
+        match where_sumatrapdf {
+            Ok(o) if o.status.success() => String::from_utf8_lossy(&o.stdout).to_string(),
+            _ => "SumatraPDF-settings.txt".to_string(),
+        }
+    });
 
-    let default_settings_filepath = "SumatraPDF-settings.txt".to_string();
-    let settings_filepath = args.next().unwrap_or(default_settings_filepath);
-
-    let default_output_filepath = "SumatraPDF-settings-filtered.txt".to_string();
-    let output_filepath = args.next().unwrap_or(default_output_filepath);
-
-    filter_settings(settings_filepath, output_filepath);
+    filter_settings(settings_filepath);
 }
 
-fn filter_settings(settings_filepath: String, output_filepath: String) {
-    let file = std::fs::read_to_string(settings_filepath).expect("Settings file not found");
+fn filter_settings(settings_filepath: String) {
+    let file = std::fs::read_to_string(settings_filepath.clone()).expect("Settings file not found");
 
     let first_split_delimiter = "FileStates [\r\n";
     let second_split_delimiter = "\r\n]\r\n";
@@ -39,7 +40,12 @@ fn filter_settings(settings_filepath: String, output_filepath: String) {
     out_string += second_split_delimiter;
     out_string += post;
 
-    std::fs::write(output_filepath, out_string).expect("Unable to write data to output file");
+    let settings_filepath_bak = settings_filepath.clone().replace(".txt", ".bak");
+    std::fs::rename(settings_filepath.clone(), settings_filepath_bak)
+        .expect("Could not rename settings file in order to create backup.");
+
+    std::fs::write(settings_filepath, out_string)
+        .expect("Could not write filtered settings into file.");
 }
 
 fn exists(file_state: &&str) -> bool {

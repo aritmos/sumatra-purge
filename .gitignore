@@ -1,8 +1,10 @@
 # Global
 *.txt
+*.bak
 
 # Rust
 */target
+*.bacon-locations
 
 # Go
 *.exe
