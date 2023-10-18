@@ -1,5 +1,5 @@
-# sumatra-cleanse
- A simple program to remove non-existing files from SumatraPDF's filestate cache.
+# 🧹 sumatra-purge
+ A simple executable to remove non-existing files from SumatraPDF's filestate cache.
 
 ## Problem:
 - [SumatraPDF](https://www.sumatrapdfreader.org/) is an amazing lightweight FOSS PDF viewer for Windows, and my personal daily driver for the past 5 years.
@@ -8,12 +8,14 @@
 
 ![SumatraPDF-search](sumatrapdf-search.jpg)
 
-- The problem is that this **file cache is never purged**. Every PDF that one opens with SumatraPDF gets saved to it, and these logs persist after the file has been deleted or moved, resulting in possibly hundreds of results polluting both the settings file and the command palette's results.
+**HOWEVER**
+- This **file cache is never purged**. 
+- Every PDF that SumatraPDF opens gets saved to the filestate, and these logs persist after the file has been deleted or moved, resulting in possibly hundreds of results polluting both the settings file and the command palette's results.
 
 ## Solution
 - SumatraPDF is a simple program that loads up SumatraPDF's settings file, scans through the list of saved filestates, and only keeps the ones for which the file still exists in the stated location.
 
-- In my case I found that around 40% of the logged files were no longer existent:
+- In my case, around 40% of the logged files were no longer existent:
 ```
 Permissions Size User    Name
 .rw-r--r--   45k aritmos SumatraPDF-settings.txt
@@ -21,12 +23,13 @@ Permissions Size User    Name
 ```
 
 ### Implementation
-I had already written the Rust implementation a couple months before the creation of the repo. Since this is a nice little scripting project I thought it would be good to translate it into Go and Zig as I clean up the original implementation.
+I had already written the Rust implementation a couple months before the creation of the repo. Since this is a nice little scripting project I thought it would be good to translate it into other languages as a refresher:
 
-|          | Basic Impl | Polished |
-| -------- | ---------- | -------- |
-| **Rust** |     ✔️      |          |
-| **Go**   |            |          |
-| **Zig**  |            |          |
+|            | Basic Impl | Polished |
+| ---------- | ---------- | -------- |
+| **Rust**   |     ✔️      |          |
+| **Go**     |            |          |
+| **Zig**    |            |          |
+| **Python** |            |          |
 
 
